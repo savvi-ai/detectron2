@@ -80,6 +80,6 @@ if __name__ == '__main__':
     trainer.resume_or_load(resume=False)
     trainer.train()
 
-    evaluator = COCOEvaluator("balloon_val", cfg, False, output_dir="./output/")
+    evaluator = COCOEvaluator("balloon_val", cfg, False, output_dir="/output/")
     val_loader = build_detection_test_loader(cfg, "balloon_val")
     print(inference_on_dataset(trainer.model, val_loader, evaluator))
