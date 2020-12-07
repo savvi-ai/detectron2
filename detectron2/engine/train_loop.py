@@ -234,6 +234,7 @@ class SimpleTrainer(TrainerBase):
         """
         loss_dict = self.model(data)
         losses = sum(loss_dict.values())
+        print(f'losses[{type(losses)}]: {losses}')
 
         """
         If you need to accumulate gradients or do something similar, you can
