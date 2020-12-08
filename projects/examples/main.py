@@ -15,11 +15,8 @@ from detectron2.evaluation import COCOEvaluator, inference_on_dataset
 from detectron2.data import build_detection_test_loader
 
 
-class HelloHook(HookBase):
+class SavviHubHook(HookBase):
     def after_step(self):
-        if self.trainer.iter % 10 == 0:
-            print(f"Hello at iteration {self.trainer.iter}!")
-            print(f"Storage total loss[{type(self.trainer.storage.history('total_loss').values())}]: {self.trainer.storage.history('total_loss').values()}")
         savvihub.log(step=self.trainer.iter, row={'loss': self.trainer.storage.history('total_loss').latest()})
 
 
@@ -79,19 +76,19 @@ def set_train_cfg():
 
 if __name__ == '__main__':
     for d in ["train", "val"]:
-        DatasetCatalog.register("balloon_" + d, lambda d=d: get_balloon_dicts("balloon/" + d))
-        MetadataCatalog.get("balloon_" + d).set(thing_classes=["balloon"])
+        DatasetCatalog.register("/input/balloon_" + d, lambda d=d: get_balloon_dicts("balloon/" + d))
+        MetadataCatalog.get("/input/balloon_" + d).set(thing_classes=["balloon"])
 
     balloon_metadata = MetadataCatalog.get("balloon_train")
 
     cfg = set_train_cfg()
-    os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
+    # os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
     trainer = DefaultTrainer(cfg)
     trainer.resume_or_load(resume=False)
-    after_step_hook = HelloHook()
+    after_step_hook = SavviHubHook()
     trainer.register_hooks([after_step_hook])
     trainer.train()
 
-    evaluator = COCOEvaluator("balloon_val", cfg, False, output_dir="/output/")
+    evaluator = COCOEvaluator("/input/balloon_val", cfg, False, output_dir="/output/")
     val_loader = build_detection_test_loader(cfg, "balloon_val")
     print(inference_on_dataset(trainer.model, val_loader, evaluator))
