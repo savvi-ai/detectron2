@@ -22,8 +22,9 @@ class HelloHook(HookBase):
             print(f"Hello at iteration {self.trainer.iter}!")
             print(f"Trainer __dict__: {self.trainer.__dict__}")
 
-        storage = get_event_storage()
-        savvihub.log(step=storage.iter, row={'loss': storage.histories().items()['total_loss']})
+        # storage = get_event_storage()
+        # print(f"Storage")
+        # savvihub.log(step=storage.iter, row={'loss': storage.histories().items()['total_loss']})
 
 
 def get_balloon_dicts(img_dir):
