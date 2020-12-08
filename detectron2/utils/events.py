@@ -9,7 +9,6 @@ from contextlib import contextmanager
 import torch
 from fvcore.common.file_io import PathManager
 from fvcore.common.history_buffer import HistoryBuffer
-import savvihub
 
 __all__ = [
     "get_event_storage",
@@ -258,7 +257,6 @@ class CommonMetricPrinter(EventWriter):
                 memory="max_mem: {:.0f}M".format(max_mem_mb) if max_mem_mb is not None else "",
             )
         )
-        savvihub.log(step=iteration, row={'loss': storage.histories().items()['total_loss']})
 
 
 class EventStorage:
