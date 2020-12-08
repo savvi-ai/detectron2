@@ -20,7 +20,7 @@ class HelloHook(HookBase):
     def after_step(self):
         if self.trainer.iter % 10 == 0:
             print(f"Hello at iteration {self.trainer.iter}!")
-            print(f"Trainer __dict__: {self.trainer.__dict__}")
+            print(f"Storage dict: {self.trainer.storage.__dict__}")
 
         # storage = get_event_storage()
         # print(f"Storage")
