@@ -1,4 +1,3 @@
-from detectron2.utils.events import get_event_storage
 from detectron2.utils.logger import setup_logger
 
 setup_logger()
@@ -8,7 +7,7 @@ import os, json, cv2
 import savvihub
 
 from detectron2 import model_zoo
-from detectron2.engine import DefaultTrainer, HookBase, hooks
+from detectron2.engine import DefaultTrainer, HookBase
 from detectron2.config import get_cfg
 from detectron2.data import MetadataCatalog, DatasetCatalog
 from detectron2.structures import BoxMode
@@ -20,11 +19,8 @@ class HelloHook(HookBase):
     def after_step(self):
         if self.trainer.iter % 10 == 0:
             print(f"Hello at iteration {self.trainer.iter}!")
-            print(f"Storage dict: {self.trainer.storage.__dict__}")
-
-        # storage = get_event_storage()
-        # print(f"Storage")
-        # savvihub.log(step=storage.iter, row={'loss': storage.histories().items()['total_loss']})
+            print(f"Storage total loss: {self.trainer.storage['total_loss']}")
+        # savvihub.log(step=self.trainer.iter, row={'loss': self.trainer.storage['total_loss']})
 
 
 def get_balloon_dicts(img_dir):
