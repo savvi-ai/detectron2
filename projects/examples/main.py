@@ -18,7 +18,7 @@ from detectron2.data import build_detection_test_loader
 
 class HelloHook(HookBase):
     def after_step(self):
-        if self.trainer.iter % 100 == 0:
+        if self.trainer.iter % 10 == 0:
             print(f"Hello at iteration {self.trainer.iter}!")
             print(f"Trainer __dict__: {self.trainer.__dict__}")
 
@@ -91,7 +91,8 @@ if __name__ == '__main__':
     os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
     trainer = DefaultTrainer(cfg)
     trainer.resume_or_load(resume=False)
-    trainer.register_hooks([HelloHook])
+    after_step_hook = HelloHook()
+    trainer.register_hooks([after_step_hook])
     trainer.train()
 
     evaluator = COCOEvaluator("balloon_val", cfg, False, output_dir="/output/")
