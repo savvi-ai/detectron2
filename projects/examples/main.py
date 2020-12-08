@@ -62,7 +62,7 @@ def get_balloon_dicts(img_dir):
 def set_train_cfg():
     config = get_cfg()
     config.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"))
-    config.DATASETS.TRAIN = ("balloon_train",)
+    config.DATASETS.TRAIN = ("/input/balloon_train",)
     config.DATASETS.TEST = ()
     config.DATALOADER.NUM_WORKERS = 2
     config.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml")
