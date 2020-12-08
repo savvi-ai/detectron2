@@ -19,8 +19,8 @@ class HelloHook(HookBase):
     def after_step(self):
         if self.trainer.iter % 10 == 0:
             print(f"Hello at iteration {self.trainer.iter}!")
-            print(f"Storage total loss[{type(self.trainer.storage.histories)}]: {self.trainer.storage.histories}")
-        # savvihub.log(step=self.trainer.iter, row=self.trainer.storage.histories)
+            print(f"Storage total loss[{type(self.trainer.storage.histories())}]: {self.trainer.storage.histories()}")
+        savvihub.log(step=self.trainer.iter, row=self.trainer.storage.histories())
 
 
 def get_balloon_dicts(img_dir):
