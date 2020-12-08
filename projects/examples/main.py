@@ -84,12 +84,12 @@ if __name__ == '__main__':
 
     cfg = set_train_cfg()
     os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
-    trainer = DefaultTrainer(cfg)  
+    trainer = DefaultTrainer(cfg)
     trainer.resume_or_load(resume=False)
     after_step_hook = SavviHubHook()
     trainer.register_hooks([after_step_hook])
     trainer.train()
 
     evaluator = COCOEvaluator("/input/balloon_val", cfg, False, output_dir="/output/")
-    val_loader = build_detection_test_loader(cfg, "balloon_val")
+    val_loader = build_detection_test_loader(cfg, "/input/balloon_val")
     print(inference_on_dataset(trainer.model, val_loader, evaluator))
