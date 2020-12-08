@@ -76,7 +76,7 @@ def set_train_cfg():
 
 if __name__ == '__main__':
     for d in ["train", "val"]:
-        DatasetCatalog.register("/input/balloon_" + d, lambda d=d: get_balloon_dicts("balloon/" + d))
+        DatasetCatalog.register("/input/balloon_" + d, lambda d=d: get_balloon_dicts("/input/balloon/" + d))
         MetadataCatalog.get("/input/balloon_" + d).set(thing_classes=["balloon"])
 
     balloon_metadata = MetadataCatalog.get("balloon_train")
