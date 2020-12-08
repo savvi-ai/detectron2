@@ -83,8 +83,8 @@ if __name__ == '__main__':
     balloon_metadata = MetadataCatalog.get("balloon_train")
 
     cfg = set_train_cfg()
-    # os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
-    trainer = DefaultTrainer(cfg)
+    os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
+    trainer = DefaultTrainer(cfg)  
     trainer.resume_or_load(resume=False)
     after_step_hook = SavviHubHook()
     trainer.register_hooks([after_step_hook])
