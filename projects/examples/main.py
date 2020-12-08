@@ -22,6 +22,7 @@ class SavviHubHook(HookBase):
 
 def get_balloon_dicts(img_dir):
     json_file = os.path.join(img_dir, "via_region_data.json")
+    print(f'json_file:{json_file}')
     with open(json_file) as f:
         imgs_anns = json.load(f)
 
