@@ -1,17 +1,24 @@
-import detectron2
 from detectron2.utils.logger import setup_logger
+
 setup_logger()
 
 import numpy as np
 import os, json, cv2
 
 from detectron2 import model_zoo
-from detectron2.engine import DefaultTrainer
+from detectron2.engine import DefaultTrainer, HookBase
 from detectron2.config import get_cfg
 from detectron2.data import MetadataCatalog, DatasetCatalog
 from detectron2.structures import BoxMode
 from detectron2.evaluation import COCOEvaluator, inference_on_dataset
 from detectron2.data import build_detection_test_loader
+
+
+class HelloHook(HookBase):
+    def after_step(self):
+        if self.trainer.iter % 100 == 0:
+            print(f"Hello at iteration {self.trainer.iter}!")
+            print(f"Trainer __dict__: {self.trainer.__dict__}")
 
 
 def get_balloon_dicts(img_dir):
@@ -52,6 +59,7 @@ def get_balloon_dicts(img_dir):
         dataset_dicts.append(record)
     return dataset_dicts
 
+
 def set_train_cfg():
     config = get_cfg()
     config.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"))
@@ -78,6 +86,8 @@ if __name__ == '__main__':
     os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
     trainer = DefaultTrainer(cfg)
     trainer.resume_or_load(resume=False)
+    after_step_hook = HelloHook(trainer)
+    trainer.register_hooks(after_step_hook)
     trainer.train()
 
     evaluator = COCOEvaluator("balloon_val", cfg, False, output_dir="/output/")
